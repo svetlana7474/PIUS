@@ -47,8 +47,10 @@ while (true) {
                     $file_path = getFilePath($file_id);
                     $file_url = "https://api.telegram.org/file/bot" . TOKEN . "/" . $file_path;
 
+
                     $prefix = ($states[$chat_id] == "encode") ? "encoded" : "decoded";
                     $ext = pathinfo($original_name, PATHINFO_EXTENSION);
+
 
                     $i = 1;
                     do {
@@ -56,6 +58,7 @@ while (true) {
                         $file_path_on_disk = "$saveDir/$new_file_name";
                         $i++;
                     } while (file_exists($file_path_on_disk));
+
 
                     // Сохраняем файл
                     $data = file_get_contents($file_url);
@@ -122,6 +125,7 @@ function getFilePath($file_id) {
     $url = "https://api.telegram.org/bot" . TOKEN . "/getFile?file_id=" . $file_id;
     $response = file_get_contents($url);
     $response = json_decode($response, true);
+
     return $response['result']['file_path'] ?? '';
 }
 
@@ -130,6 +134,7 @@ function sendDocument($chat_id, $file_path, $filename) {
         sendMessage($chat_id, "❌ Обработанный файл не найден: $filename");
         return;
     }
+
 
     $url = "https://api.telegram.org/bot" . TOKEN . "/sendDocument";
     $post_fields = [
