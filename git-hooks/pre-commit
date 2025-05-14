@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Запуск PHP_CodeSniffer
+echo "Running PHP_CodeSniffer..."
+/home/miet/PIUS/pius/vendor/bin/phpcs --standard=/home/miet/PIUS/pius/phpcs.xml
+if [ $? -ne 0 ]; then
+    echo "PHP_CodeSniffer found errors. Commit aborted."
+    exit 1
+fi
+
+
+echo "All checks passed. Proceeding with commit."
+exit 0

@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+  title: CryptFile
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:8000/api/v1
+    description: Blowfish crypt server
+paths:
+  /blowfish:
+    get:
+      summary: Encrypts the file using the specified path
+      operationId: encrypt
+      parameters:
+        - name: user_id
+          in: query
+          description: The ID of the user requesting encryption
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 123456789
+        - name: path
+          in: query
+          description: The path to the file in the system
+          required: true
+          schema:
+            type: string
+            example: "/var/data/files/myfile.txt"
+        - name: action
+          in: query
+          description: Action (encrypt, decrypt)
+          required: true
+          schema:
+            type: string
+            enum:
+              - encrypt
+              - decrypt
+            example: encrypt
+      responses:
+        '200':
+          description: The file has been successfully encrypted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  encryptedFilePath:
+                    type: string
+                    description: The path to the encrypt file in the system
+                    example: "/var/data/files/myfile_encrypted.txt"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: File not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: code error
+          example: 400
+        message:
+          type: string
+          description: massage error
+          example: "File not found"
