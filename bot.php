@@ -1,7 +1,7 @@
 <?php  
 echo "Бот запускается...\n";
 
-define('TOKEN', '7464255272:AAET0M7A6ZEDb2p7-_qas8pJLo8awtnvqw0');
+define('TOKEN', '7464255272:AAE7zQvQ8bq7pauwpextOzz38o3jB82eLFk');
 $offset = 0;
 $states = [];
 
@@ -73,12 +73,17 @@ while (true) {
                     ]);
 
                     $response = @file_get_contents($apiUrl . '?' . $queryParams);
+
+                    
+                    
                     $result = json_decode($response, true);
 
+                    
+
                     // Проверка результата
-                    sendMessage($chat_id, "Ответ API:\n" . $response);
-                    if (isset($result['encryptedFilePath'])) {
-                        $finalPath = $result['encryptedFilePath'];
+                    
+                    if (isset($result['encryptedFilePath']) || isset($result['FilePath'])) {
+                    $finalPath = $result['encryptedFilePath'] ?? $result['FilePath'];
                         sendDocument($chat_id, $finalPath, basename($finalPath));
                     } else {
                         sendMessage($chat_id, "❌ Ошибка при обработке файла. Сервер вернул пустой или неверный ответ.");
@@ -125,6 +130,8 @@ function getFilePath($file_id) {
     $url = "https://api.telegram.org/bot" . TOKEN . "/getFile?file_id=" . $file_id;
     $response = file_get_contents($url);
     $response = json_decode($response, true);
+
+    
 
     return $response['result']['file_path'] ?? '';
 }
