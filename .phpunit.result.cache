@@ -1,0 +1,1 @@
+{"version":1,"defects":{"BotTest::testSendMessage":8,"BotTest::testProcessTextMessageStart":8,"BotTest::testProcessTextMessageUnknown":8},"times":{"BotTest::testSendMessage":0.024,"BotTest::testProcessTextMessageStart":0.001,"BotTest::testProcessTextMessageUnknown":0.002}}
