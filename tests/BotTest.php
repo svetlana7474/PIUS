@@ -19,20 +19,20 @@ class BotTest extends TestCase
             mkdir($this->saveDir, 0777, true);
         }
 
-        // Создаем объект Bot с тестовым токеном и тестовой папкой
+        
         $this->bot = new Bot($this->token, $this->saveDir);
     }
 
     protected function tearDown(): void
     {
-        // Очистка тестовой папки
+        
         array_map('unlink', glob("$this->saveDir/*"));
         rmdir($this->saveDir);
     }
 
     public function testSendMessage()
     {
-        // Переопределим метод file_get_contents чтобы не делать реальных запросов
+        
         $mock = $this->getMockBuilder(Bot::class)
             ->setConstructorArgs([$this->token, $this->saveDir])
             ->onlyMethods(['sendMessage'])
@@ -42,7 +42,7 @@ class BotTest extends TestCase
              ->method('sendMessage')
              ->with($this->equalTo(123), $this->equalTo('Тестовое сообщение'));
 
-        // Принудительно вызываем sendMessage
+        
         $mock->sendMessage(123, 'Тестовое сообщение');
     }
 
@@ -50,7 +50,7 @@ class BotTest extends TestCase
     {
         $chat_id = 123;
 
-        // Чтобы проверить вызовы sendWelcomeMessage и sendMenu, создадим мок с их ожиданиями
+        
         $mock = $this->getMockBuilder(Bot::class)
             ->setConstructorArgs([$this->token, $this->saveDir])
             ->onlyMethods(['sendWelcomeMessage', 'sendMenu'])
@@ -87,5 +87,5 @@ class BotTest extends TestCase
         $method->invoke($mock, $chat_id, $text);
     }
 
-    // Тут можно добавить тесты для getFilePath, sendDocument и processDocument с моками curl и file_get_contents
+    
 }
